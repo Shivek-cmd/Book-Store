@@ -13,9 +13,10 @@ function Banner() {
               <span className="text-pink-500">new everyday!!!</span>
             </h1>
             <p className="text-xl">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam
-              delectus optio quas repellat magni deleniti beatae ea excepturi
-              quos aut?
+              Welcome to our bookstore app, where you can browse a diverse
+              collection of books, from bestsellers to hidden gems. Explore
+              curated categories, read reviews, and easily purchase your next
+              favorite read, all in one place.
             </p>
             <label className="input input-bordered flex items-center gap-2">
               <svg
