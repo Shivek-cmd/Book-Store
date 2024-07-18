@@ -1,34 +1,70 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Login from "./Login";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 function Signup() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const previousPathname = location.state?.from?.pathname || "/";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = {};
     if (!name.length > 0) {
-      errors.name = "name is required";
+      errors.name = "Name is required";
     }
     if (!email.length > 0) {
-      errors.email = "email is required";
+      errors.email = "Email is required";
     }
     if (!password.length > 0) {
-      errors.password = "password is required";
+      errors.password = "Password is required";
     }
 
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
+
       return;
     }
     setErrors({});
+    try {
+      const response = await axios.post("http://localhost:4001/user/signup", {
+        name,
+        email,
+        password,
+      });
+
+      toast.success("Signup Successfully");
+      window.location.href = previousPathname;
+      navigate(previousPathname, { replace: true });
+      localStorage.setItem("Users", JSON.stringify(response.data.user));
+      console.log(response.data);
+    } catch (error) {
+      if (error.response) {
+        // Request made and server responded with an error status code
+        console.error("Server Error:", error.response.data);
+        toast.error(error.response.data.message);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("Network Error:", error.request);
+        toast.error("Network error. Please try again.");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Error:", error.message);
+        toast.error("An error occurred. Please try again.");
+      }
+    }
   };
+
   return (
-    <div className="h-screen flex items-center justify-center  ">
-      <div className="modal-box  dark:bg-slate-900">
+    <div className="h-screen flex items-center justify-center">
+      <div className="modal-box dark:bg-slate-900">
         <form onSubmit={handleSubmit} method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <Link
@@ -81,7 +117,7 @@ function Signup() {
             <br />
             <input
               type="password"
-              placeholder="Enter your Password  "
+              placeholder="Enter your Password"
               className="w-80 px-3 py-1 border rounded-md outline-none"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -102,7 +138,7 @@ function Signup() {
               SignUp
             </button>
             <p className="text-xl">
-              Have Account?{" "}
+              Have an account?{" "}
               <button
                 className="underline text-blue-500 cursor-pointer"
                 onClick={() => {

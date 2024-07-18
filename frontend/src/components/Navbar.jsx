@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Login from "../components/Login.jsx";
+import { useAuth } from "../context/AuthProvider.jsx";
+import Logout from "./Logout.jsx";
 function Navbar() {
+  const [authUser, setAuthUser] = useAuth();
   const navItems = (
     <>
       <li>
@@ -146,18 +149,22 @@ function Navbar() {
             </label>
           </div>
 
-          {/* Login Container */}
-          <div>
-            <a
-              className="bg-black text-white px-3 py-2 rounded-md hover:bg-slate-100 duration-300 cursor-pointer"
-              onClick={() => {
-                document.getElementById("my_modal_3").showModal();
-              }}
-            >
-              Login
-            </a>
-            <Login />
-          </div>
+          {/* Login/Logout Container */}
+          {authUser ? (
+            <Logout />
+          ) : (
+            <div>
+              <a
+                className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-300 duration-300 cursor-pointer"
+                onClick={() => {
+                  document.getElementById("my_modal_3").showModal();
+                }}
+              >
+                Login
+              </a>
+              <Login />
+            </div>
+          )}
         </div>
       </div>
     </div>

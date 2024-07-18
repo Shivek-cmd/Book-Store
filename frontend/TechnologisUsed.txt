@@ -1,1 +1,1 @@
-Tailwind , daisyui(Tailwind css library),react-slick(slider)
+Tailwind , daisyui(Tailwind css library),react-slick(slider),react-hot-toast(used in login (when login))
